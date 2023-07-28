@@ -1,0 +1,59 @@
+.setting{
+    width: 50%;
+    margin:0 auto;
+    padding: 5px;
+    border:1px solid red;
+    .userava{
+        input{
+            display: none;
+        }
+        .upload_btn{
+            padding: 7px 10px;
+            background-color: darkgrey;
+            border-radius: 8px;
+            outline: none;
+
+        }
+    }
+    .user{
+        width: 140px;
+        height: 140px; 
+        border-radius:50%;
+    }
+    .add_new{
+        width: 2vw;
+        border-radius: 50%;
+        margin:0px -40px;
+    }
+
+    .edit_card{
+        form{
+            display: flex;
+            flex-direction: column;
+            margin:0px 20px;
+            label{
+                font-size: 22px;
+                color:#fff;
+                margin:10px 0px;
+            }
+            input{
+                border-style: none;
+                outline: none;
+                font-size: 18px;
+                padding: 10px;
+            }
+            button{
+                margin:10px 0px;
+                padding: 10px 0px;
+            }
+        }
+    }
+}
+
+.loading{
+    position:absolute;
+    top:30%;
+    left:40%;
+    font-size: 25px;
+    color:#fff
+}

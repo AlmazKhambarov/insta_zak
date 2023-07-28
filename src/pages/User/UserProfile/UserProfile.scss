@@ -1,0 +1,72 @@
+.profile {
+  width: 50%;
+  margin: 0 auto;
+  padding: 10px;
+  .profile_card {
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    .username_card{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin:20px 0px;
+        .username_card_content{
+            display: flex;
+            gap:10px;
+            align-items: center;
+            button{
+                padding: 5px 50px;
+                font-size: 18px;
+                color:#000;
+                font-weight: 600;
+                background-color: none;
+            }
+        }
+    }
+    h1 {
+      color: #fff;
+    //   margin-top: -40px;
+    }
+    .profile_card_image {
+      width: 8vw;
+      border-radius: 50%;
+    }
+.follow_table{
+
+}
+    .follow {
+      display: flex;
+      gap: 20px;
+      div {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+        p {
+          color: #fff;
+          font-size: 20px;
+        }
+        span {
+          font-size: 25px;
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  .posts_card{
+    margin:40px 0px;
+    // height: 100%;
+    h4{
+        color:#fff;
+        margin:4px 0;
+
+    }
+    .posts_image{
+        width: 10vw;
+    }
+    .posts_card_images{
+        margin:20px 0px
+    }
+  }
+}
