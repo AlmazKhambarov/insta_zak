@@ -5,8 +5,8 @@
 }
 
 body {
-  min-height: 100vh;
-  background: #1a313a;
+  min-height: 100vh !important;
+  background: #1a313a !important;
 }
 
 .container {

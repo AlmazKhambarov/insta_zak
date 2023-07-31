@@ -52,11 +52,17 @@
   background-color: white;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  // align-items: center;
   justify-content: center;
   .image{
     width: 400px;
     height: 300px;
+  }
+  input{
+    outline: none;
+    margin: 10px 5px;
+    padding: 10px 5px;
+    font-size: 20px;
   }
 }
 .upload__done_btn {

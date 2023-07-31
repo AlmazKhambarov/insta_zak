@@ -1,30 +1,36 @@
 import React, { useEffect, useState } from "react";
 import "./UserProfile.scss";
-import user from "../../../assets/images/user_img.png";
+// import user from "../../../assets/images/user_img.png";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { Link } from "react-router-dom";
-import { storage } from "../../../api/firebase";
-import {
-  ref,
-  uploadBytes,
-  getDownloadURL,
-  listAll,
-  list,
-} from "firebase/storage";
-const UserProfile = () => {
-  const [imageUrls, setImageUrls] = useState([]);
-  useEffect(() => {
-    const imagesListRef = ref(storage, "images/");
+import { firestore, storage } from "../../../api/firebase";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 
-    listAll(imagesListRef).then((response) => {
-      response.items.forEach((item) => {
-        getDownloadURL(item).then((url) => {
-          setImageUrls((prev) => [...prev, url]);
-        });
-      });
+const UserProfile = ({ user }) => {
+  const [imageUrls, setImageUrls] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [filtred, setFiltred] = useState([]);
+  useEffect(() => {
+    const articleRef = collection(firestore, "Articles");
+    const q = query(articleRef, orderBy("createdAt", "desc"));
+    onSnapshot(q, (snapshot) => {
+      const post = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setPosts(post);
     });
   }, []);
-console.log(imageUrls)
+  console.log(posts);
+  useEffect(() => {
+    var arr = [];
+    var res = posts?.find((el) => el.userId === user?.uid);
+    if (res) {
+      // console.log(res);
+      setFiltred((prev) => [...prev, res]);
+    }
+  }, [posts]);
+  console.log(filtred);
   const userName = localStorage.getItem("username");
   return (
     <div className="profile">
@@ -34,7 +40,7 @@ console.log(imageUrls)
         </div>
         <div>
           <div className="username_card">
-            <h1>{userName}</h1>
+            <h1>{user?.displayName}</h1>
             <div className="username_card_content">
               <Link to={"/home/setting"}>
                 <button>edit</button>
@@ -46,11 +52,11 @@ console.log(imageUrls)
           </div>
           <div className="follow">
             <div>
-              <span>{imageUrls.length}</span>
+              <span>{filtred?.length}</span>
               <p>publication</p>
             </div>
             <div>
-              <span>0</span>
+              <span>2</span>
               <p> subscribers</p>
             </div>
             <div>
@@ -65,8 +71,8 @@ console.log(imageUrls)
         <h4>posts</h4>
         <hr />
         <div className="posts_card_images">
-          {imageUrls?.map((img)=>(
-            <img src={img} alt='#' className="posts_image"/>
+          {filtred.map((img) => (
+            <img src={img.imageUrl} alt="#" className="posts_image" />
           ))}
         </div>
       </div>

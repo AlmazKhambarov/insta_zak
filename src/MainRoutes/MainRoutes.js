@@ -22,7 +22,7 @@ const MainRoutes = () => {
         <div style={{ display: 'flex' }}>
             {user ? <Layout /> : null}
             <Routes>
-                <Route path='/' element={user ? <App /> : <Login />} />
+                <Route path='/' element={user ? <Posts /> : <Login />} />
                 <Route path='/register' element={user ? <App /> : <Register />} />
                 <Route path='/home' element={user ? <Posts /> : <Login />} />
                 <Route path='/home/user' element={user ? <UserProfile user={user} /> : <Login />} />
