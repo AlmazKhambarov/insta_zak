@@ -11,6 +11,7 @@ import Layout from "../layout/Layout"
 import Home from "../pages/Home/Home"
 import Posts from "../pages/Posts/Posts"
 import UserUpload from "../pages/User/UserUpload/UserUpload"
+import CommentModal from "../pages/User/CommentModal/CommentModal"
 
 const MainRoutes = () => {
     const [user, setUser] = useState('')
@@ -29,6 +30,7 @@ const MainRoutes = () => {
                 <Route path='/home/setting' element={user ? <UserSetting user={user} /> : <Login />} />
                 <Route path='/home/order' element={user ? <UserOrder user={user} /> : <Login />} />
                 <Route path='/home/upload' element={user ? <UserUpload user={user} /> : <Login />} />
+                <Route path='/home/comment/:id' element={user ? <CommentModal user={user} /> : <Login />} />\
 
             </Routes>
         </div>

@@ -8,6 +8,7 @@ const postSlice = createSlice({
     uploading: false,
     imageUrl: null,
     error: null,
+    articles:[]
   },
   reducers: {
     startUpload: (state) => {
@@ -22,10 +23,13 @@ const postSlice = createSlice({
       state.uploading = false;
       state.error = action.payload;
     },
+    postsUpload: (state, action) => {
+      state.articles = action.payload
+    }
   },
 });
 
-export const { startUpload, uploadSuccess, uploadFailure } = postSlice.actions;
+export const { startUpload, uploadSuccess, uploadFailure, postsUpload } = postSlice.actions;
 
 export const uploadImage = (file) => async (dispatch) => {
   dispatch(startUpload());

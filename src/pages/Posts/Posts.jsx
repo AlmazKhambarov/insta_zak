@@ -1,38 +1,27 @@
 import React, { useEffect, useState } from "react";
 import "./Posts.scss";
 import user_img from "../../assets/images/user_img.png";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ModeCommentIcon from "@mui/icons-material/ModeComment";
-import { datas } from "./postsData";
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import Users from "../User/Users";
-import { getDownloadURL, listAll, ref } from "firebase/storage";
+import { ref } from "firebase/storage";
 import { firestore, storage } from "../../api/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../redux/reduxToolkit/extraReducer";
-import { useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {
-  arrayRemove,
-  arrayUnion,
-  collection,
-  doc,
-  onSnapshot,
-  orderBy,
-  query,
-  updateDoc,
-} from "firebase/firestore";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import Likes from "./Likes";
 import Saved from "./Saved";
+import { useNavigate } from "react-router-dom";
+import { postsUpload } from "../../redux/postSlice/postSlice";
 const Posts = () => {
   const [article, setArticles] = useState(null);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.login);
-  const imagesListRef = ref(storage, "images/");
-
+  const navigate = useNavigate();
   useEffect(() => {
     getUser();
   }, []);
+
   useEffect(() => {
     const articleRef = collection(firestore, "Articles");
     const q = query(articleRef, orderBy("createdAt", "desc"));
@@ -42,7 +31,6 @@ const Posts = () => {
         ...doc.data(),
       }));
       setArticles(articles);
-      // console.log(articles);
     });
   }, []);
   console.log(article);
@@ -64,12 +52,20 @@ const Posts = () => {
               </div>
               <div className="card__title">
                 <span>
-                  <p>{el.createdBy}:</p>{el.title}
+                  <p>{el.createdBy}:</p>
+                  {el.title}
                 </span>
               </div>
               <div className="card_items">
                 <Likes id={el.id} likes={el.likes} user={user} />
-                <ModeCommentIcon sx={{ fontSize: "30px" }} />
+                <span
+                  onClick={() =>
+                    navigate(`/home/comment/${el.id}`) ||
+                    dispatch(postsUpload(el))
+                  }
+                >
+                  <ModeCommentIcon sx={{ fontSize: "30px" }} />
+                </span>
                 <Saved />
               </div>
             </div>
