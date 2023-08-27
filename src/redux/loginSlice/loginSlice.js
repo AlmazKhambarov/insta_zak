@@ -6,12 +6,17 @@ const initialState = {
     error: null,
     loading: false,
     user: null,
+    progress: 0
 }
 
 const loginSlice = createSlice({
     name: 'user',
     initialState,
-    reducers: {},
+    reducers: {
+        setProgress: (state, action) => {
+            state.progress = action.payload
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(createUserAndProfileAsync.pending, (state) => {
@@ -26,18 +31,7 @@ const loginSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
             });
-        builder
-            .addCase(loginRequest.pending, (state) => {
-                state.loading = true;
-            })
-            .addCase(loginRequest.fulfilled, (state, action) => {
-                state.loading = false;
-                state.user = action.payload;
-            })
-            .addCase(loginRequest.rejected, (state, action) => {
-                state.loading = false;
-                state.error = 'false'
-            });
+
         builder
             .addCase(getUser.pending, (state, action) => {
                 state.loading = true;
@@ -51,5 +45,5 @@ const loginSlice = createSlice({
     }
 })
 
-export const { } = loginSlice.actions
+export const { setProgress } = loginSlice.actions
 export default loginSlice.reducer

@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { storage } from '../../api/firebase';
+import { publishPosts } from '../reduxToolkit/extraReducer';
 
 
 const postSlice = createSlice({
@@ -8,7 +9,8 @@ const postSlice = createSlice({
     uploading: false,
     imageUrl: null,
     error: null,
-    articles:[]
+    articles: [],
+    loadingUpload: false
   },
   reducers: {
     startUpload: (state) => {
@@ -27,6 +29,18 @@ const postSlice = createSlice({
       state.articles = action.payload
     }
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(publishPosts.pending, (state, action) => {
+        state.loadingUpload = true
+      })
+      .addCase(publishPosts.fulfilled, (state, action) => {
+        state.loadingUpload = false
+      })
+      .addCase(publishPosts.rejected, (state, action) => {
+
+      })
+  }
 });
 
 export const { startUpload, uploadSuccess, uploadFailure, postsUpload } = postSlice.actions;

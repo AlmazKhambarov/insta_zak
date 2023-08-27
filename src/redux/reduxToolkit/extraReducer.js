@@ -1,8 +1,10 @@
 import { createAsyncThunk, createReducer } from '@reduxjs/toolkit'
-import { auth, firestore } from '../../api/firebase';
+import { auth, firestore, storage } from '../../api/firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import { Timestamp, addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import { setProgress } from '../loginSlice/loginSlice';
 // export const signUpUser = createAsyncThunk(
 //   'auth/signUpUser',
 //   async (data, thunkAPI) => {
@@ -63,16 +65,6 @@ export const createUserAndProfileAsync = createAsyncThunk(
   }
 )
 
-export const loginRequest = createAsyncThunk('login/user', async (data) => {
-  const { email, password } = data;
-  try {
-    const logedUser = await signInWithEmailAndPassword(auth, email, password)
-    return logedUser
-  } catch (e) {
-
-  }
-
-})
 
 export const getUser = createAsyncThunk('get/only/user', async () => {
   try {
@@ -84,3 +76,58 @@ export const getUser = createAsyncThunk('get/only/user', async () => {
     console.log(e)
   }
 })
+
+
+
+export const publishPosts = createAsyncThunk(
+  'posts/publish',
+  async (data, thunkAPI) => {
+    const { title, imageUpload, user } = data;
+    try {
+      const storageRef = ref(
+        storage,
+        `/images/${Date.now()}${imageUpload?.name}`
+      );
+
+      const uploadImage = uploadBytesResumable(storageRef, imageUpload);
+
+      uploadImage.on(
+        'state_changed',
+        (snapshot) => {
+          const progressPercent = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          thunkAPI.dispatch(setProgress(progressPercent));
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+
+      // Await the uploadImage to complete
+      await uploadImage;
+
+      const url = await getDownloadURL(uploadImage.snapshot.ref);
+
+      const articleData = {
+        title: title,
+        description: 'description',
+        imageUrl: url,
+        createdAt: Timestamp.now().toDate(),
+        createdBy: user?.displayName,
+        userId: user?.uid,
+        likes: [],
+        comments: [],
+      };
+
+      const articleRef = collection(firestore, 'Articles');
+      await addDoc(articleRef, articleData);
+
+      thunkAPI.dispatch(setProgress(0));
+
+      return {}; // You can return data if needed
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);

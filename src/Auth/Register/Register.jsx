@@ -4,6 +4,7 @@ import {
   createUserAndProfileAsync,
   signUpUser,
 } from "../../redux/reduxToolkit/extraReducer";
+import { red } from "@mui/material/colors";
 
 const Register = () => {
   const { user, error } = useSelector((state) => state.login);
@@ -25,6 +26,7 @@ const Register = () => {
         <h3>Create Profile</h3>
         <form onSubmit={handleRegister}>
           <div>
+            <span style={{color:"red"}}>{error ? error : null}</span>
             <label>Username</label>
             <input
               type="text"
