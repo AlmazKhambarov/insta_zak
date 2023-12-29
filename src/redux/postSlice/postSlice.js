@@ -1,16 +1,20 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { storage } from '../../api/firebase';
-import { publishPosts } from '../reduxToolkit/extraReducer';
+/** @format */
 
+import { createSlice } from "@reduxjs/toolkit";
+import { storage } from "../../api/firebase";
+import { fetchUsersAsync, getUserPost, publishPosts } from "../reduxToolkit/extraReducer";
 
 const postSlice = createSlice({
-  name: 'post',
+  name: "post",
   initialState: {
     uploading: false,
     imageUrl: null,
     error: null,
     articles: [],
-    loadingUpload: false
+    loadingUpload: false,
+    loading: null,
+    otherUsers: [],
+    userPost:[]
   },
   reducers: {
     startUpload: (state) => {
@@ -26,24 +30,39 @@ const postSlice = createSlice({
       state.error = action.payload;
     },
     postsUpload: (state, action) => {
-      state.articles = action.payload
-    }
+      state.articles = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(publishPosts.pending, (state, action) => {
-        state.loadingUpload = true
+        state.loadingUpload = true;
       })
       .addCase(publishPosts.fulfilled, (state, action) => {
-        state.loadingUpload = false
+        state.loadingUpload = false;
       })
-      .addCase(publishPosts.rejected, (state, action) => {
-
+      .addCase(publishPosts.rejected, (state, action) => {});
+    builder
+      .addCase(fetchUsersAsync.pending, (state, action) => {
+        state.loading = true;
       })
-  }
+      .addCase(fetchUsersAsync.fulfilled, (state, action) => {
+        state.otherUsers = action.payload;
+      })
+      .addCase(fetchUsersAsync.rejected, (state, action) => {});
+    builder
+      .addCase(getUserPost.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(getUserPost.fulfilled, (state, action) => {
+        state.userPost = action.payload;
+      })
+      .addCase(getUserPost.rejected, (state, action) => {});
+  },
 });
 
-export const { startUpload, uploadSuccess, uploadFailure, postsUpload } = postSlice.actions;
+export const { startUpload, uploadSuccess, uploadFailure, postsUpload } =
+  postSlice.actions;
 
 export const uploadImage = (file) => async (dispatch) => {
   dispatch(startUpload());

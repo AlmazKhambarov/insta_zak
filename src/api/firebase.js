@@ -5,13 +5,13 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyB-mKOhJStCifbeBpruwn3O_2Z7NcQYiT0",
-    authDomain: "instagram-asilbek.firebaseapp.com",
-    projectId: "instagram-asilbek",
-    storageBucket: "instagram-asilbek.appspot.com",
-    messagingSenderId: "211430707127",
-    appId: "1:211430707127:web:f0c480752781cd7df6e232",
-    measurementId: "G-V6HH3JYL1E"
+    apiKey: "AIzaSyDSiKC4TmODihSnkn-qfasdUCBofbi32aI",
+    authDomain: "my-org-insta.firebaseapp.com",
+    projectId: "my-org-insta",
+    storageBucket: "my-org-insta.appspot.com",
+    messagingSenderId: "392813907946",
+    appId: "1:392813907946:web:a89b73edf5a54f1f842c93",
+    measurementId: "G-E7NJEQ8ZL1"
 };
 
 export async function upload(file, currentUser, setLoading) {

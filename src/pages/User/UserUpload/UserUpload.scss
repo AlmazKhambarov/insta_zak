@@ -47,6 +47,11 @@
   justify-content: center;
   width: 100%;
   // height: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  form{
+    width: 100%;
+  }
 }
 .form_image {
   background-color: white;

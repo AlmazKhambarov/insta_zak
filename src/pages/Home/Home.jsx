@@ -9,11 +9,8 @@ const Home = () => {
     localStorage.setItem("username", user?.displayName);
   });
 
-  return (
-    <div>
-      <p style={{ color: "red" }}> </p>
-    </div>
-  );
+  
+  
 };
 
 export default Home;

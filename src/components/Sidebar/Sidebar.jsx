@@ -20,39 +20,39 @@ const Sidebar = () => {
     window.location.reload();
   };
   return (
-    <div>
+    <div style={{width:"17%"}}>
       <div className="sidebar">
         <ul>
           <li className="logo">
-            <a href="/home">
+            <a href="/">
               <span className="icon">
                 <img className="logoDrop" src={insta_logo} />
               </span>
-              <NavLink className="text">Instagram</NavLink>
+              <p className="text">Instagram</p>
             </a>
           </li>
           <li>
-            <a href="/home">
+            <a href="/">
               <span className="icon">
                 <HomeIcon />
               </span>
-              <NavLink className="text">Home</NavLink>
+              <p className="text">Home</p>
             </a>
           </li>
           <li>
-            <a href="/home/user">
+            <a href="/profile">
               <span className="icon">
                 <Person2Icon />
               </span>
-              <NavLink className="text">Profile</NavLink>
+              <p className="text">Profile</p>
             </a>
           </li>
           <li>
-            <a href="/home/upload">
+            <a href="/upload">
               <span className="icon">
                 <AddCircleOutlineIcon />
               </span>
-              <NavLink className="text">Create</NavLink>
+              <p className="text">Create</p>
             </a>
           </li>
           <li>
@@ -60,23 +60,23 @@ const Sidebar = () => {
               <span className="icon">
                 <SignalCellularAltIcon />
               </span>
-              <NavLink className="text">Analytics</NavLink>
+              <p className="text">Analytics</p>
             </a>
           </li>
           <li>
-            <a href="/home/order">
+            <a href="/">
               <span className="icon">
                 <BookmarkBorderIcon />
               </span>
-              <NavLink className="text">Order</NavLink>
+              <p className="text">Order</p>
             </a>
           </li>
           <li>
-            <a href="/home/setting">
+            <a href="/setting">
               <span className="icon">
                 <SettingsIcon />
               </span>
-              <NavLink className="text">Setting</NavLink>
+              <p className="text">Setting</p>
             </a>
           </li>
           <li onClick={handleLogout}>

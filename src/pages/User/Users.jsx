@@ -1,22 +1,22 @@
+/** @format */
+
 import React, { useEffect, useState } from "react";
 import user_img from "../../assets/images/user_img.png";
 import "./Users.scss";
 import { auth, firestore } from "../../api/firebase";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-const Users = () => {
-  const [user, setUser] = useState("");
+import {
+  fetchUserById,
+  fetchUsersAsync,
+} from "../../redux/reduxToolkit/extraReducer";
+import { useDispatch, useSelector } from "react-redux";
+const Users = ({user}) => {
+  const { otherUsers } = useSelector((state) => state.post);
+  // const [user, setUser] = useState("");
   const [users, setUsers] = useState([]);
-  const [posts, setPosts] = useState([]);
-  const [filtred, setFiltred] = useState([
-    { id: 1, name: "Sebastian" },
-    { id: 1, name: "bartra" },
-    { id: 1, name: "Leanardo" },
-    { id: 1, name: "Keppa" },
-    { id: 1, name: "Jack" },
-  ]);
-  auth.onAuthStateChanged((user) => {
-    setUser(user);
-  });
+  var dispatch = useDispatch();
+
+console.log(user)
   useEffect(() => {
     const articleRef = collection(firestore, "users");
     const q = query(articleRef, orderBy("email"));
@@ -28,31 +28,25 @@ const Users = () => {
       setUsers(post);
     });
   }, []);
-  useEffect(() => {
-    const articleRef = collection(firestore, "Articles");
-    const q = query(articleRef, orderBy("createdAt", "desc"));
-    onSnapshot(q, (snapshot) => {
-      const articles = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setPosts(articles);
-      // console.log(articles);
-    });
-  }, []);
 
+  // useEffect(() => {
+  //   dispatch(fetchUsersAsync());
+  // }, []);
+  const filtredUsers = users.filter(x=>x.userId !==user?.uid)
+  const currentUser = users?.find(x=>x.userId==user?.uid)
+  console.log(filtredUsers);
   return (
-    <div className="main_users">
-      <div className="user_card">
-        <img src={user?.photoURL} alt="" className="user_card_img" />
-        <span>{user?.displayName}</span>
+    <div className='main_users'>
+      <div className='user_card'>
+        <img src={currentUser?.userPhoto} alt='' className='user_card_img' />
+        <span>{currentUser?.name}</span>
       </div>
       <div>
-        {filtred?.map((el) => (
-          <div className="user">
-            <img src={el.image} alt="" />
-            <span>{el.name}</span>
-            <button>follow</button>
+        {filtredUsers?.map((el) => (
+          <div className='user'>
+            <img src={el.userPhoto} alt='' />
+            <a href={`/user/${el.id}`}>{el?.name}</a>
+            {/* <button>see</button> */}
           </div>
         ))}
       </div>
